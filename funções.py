@@ -48,5 +48,26 @@ def cadastrar_livros():
         #Sempre fecha a conexão, com sucesso ou erro
         if conexao:
             conexao.close()
-       
+
+def mostrar_livros():
+    try:
+        conexao = sqlite3.connect("biblioteca.db")
+        cursor = conexao.cursor()
+
+        cursor.execute("SELECT * FROM livros")
+        for linhas in cursor.fetchall():
+            print(f"""
+            ID:{linhas[0]}
+            Titulo:{linhas[1]}
+            Autor:{linhas[2]}
+            Ano de lançamento:{linhas[3]}
+            Esta disponivel:{linhas[4]}""")
+
+    except Exception as erro:
+        print(f"Se ferrou ai pai. Erro = {erro}")
+    finally:
+        #Sempre fecha a conexão, com sucesso ou erro
+        if conexao:
+            conexao.close()
+
     
