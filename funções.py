@@ -70,4 +70,39 @@ def mostrar_livros():
         if conexao:
             conexao.close()
 
+def atualizar_livro():
+    try:
+        conexao = sqlite3.connect("biblioteca.db")
+        cursor = conexao.cursor()
+        id_mudar = int(input("Digite o id do livro que você quer alterar a disponibilidade: "))
+        cursor.execute("""
+SELECT disponivel FROM livros WHERE id = ?
+
+""", (id_mudar,))
+        retorno = cursor.fetchone()
+        if retorno[0] is None:
+            print("ID não encontrado")
+            return
+        if retorno[0] == "SIM":
+            cursor.execute("""
+        UPDATE livros
+        SET disponivel = ?
+        WHERE id = ?
+        """, ("NÃO",id_mudar))
+        conexao.commit()
+        if retorno[0] == "NÃO":
+            cursor.execute("""
+        UPDATE livros
+        SET disponivel = ?
+        WHERE id = ?    
+        """, ("SIM",id_mudar))
+        conexao.commit()
+        
+
+    except Exception as erro:
+        print(f"Se ferrou ai pai. Erro = {erro}")
+    finally:
+        #Sempre fecha a conexão, com sucesso ou erro
+        if conexao:
+            conexao.close()
     
