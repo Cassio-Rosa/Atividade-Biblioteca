@@ -3,3 +3,4 @@ import streamlit as st
 import pandas as pd
 
 fst.cadastrar_livros()
+fst.mostrar_livros()

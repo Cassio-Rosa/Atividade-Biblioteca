@@ -62,14 +62,15 @@ def mostrar_livros():
         cursor = conexao.cursor()
 
         cursor.execute("SELECT * FROM livros")
-        for linhas in cursor.fetchall():
-            print(f"""
-            ID:{linhas[0]}
-            Titulo:{linhas[1]}
-            Autor:{linhas[2]}
-            Ano de lançamento:{linhas[3]}
-            Esta disponivel:{linhas[4]}""")
-
+        livros = cursor.fetchall()
+        tabela_livros = {
+            "id": [linha[0] for linha in livros],
+            "titulo": [linha[1] for linha in livros],
+            "autor": [linha[2] for linha in livros],
+            "ano": [linha[3] for linha in livros],
+            "disponivel": [":green[Sim]" if linha[4] == "SIM" else ":red[NÃO]" for linha in livros],
+        }
+        st.table(tabela_livros, border="horizontal")
     except Exception as erro:
         print(f"Se ferrou ai pai. Erro = {erro}")
     finally:
