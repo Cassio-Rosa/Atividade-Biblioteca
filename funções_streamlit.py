@@ -26,8 +26,15 @@ CREATE TABLE IF NOT EXISTS livros (
     )
 """)
 
-
-
+def adiconar_lista():
+    conexao = sqlite3.connect("biblioteca.db")
+    cursor = conexao.cursor()
+    try:
+        cursor.execute("SELECT * FROM livros")
+        livros = [linha[0] for linha in cursor.fetchall()]
+        return livros
+    except Exception as erro:
+        st.error()
 
 def cadastrar_livros():
     try:
@@ -118,6 +125,7 @@ SELECT disponivel FROM livros WHERE id = ?
             conexao.close()
 
 def remover_livro():
+    
     try:
         conexao = sqlite3.connect("biblioteca.db")
         cursor = conexao.cursor()
