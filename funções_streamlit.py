@@ -26,6 +26,9 @@ CREATE TABLE IF NOT EXISTS livros (
     )
 """)
 
+
+
+
 def cadastrar_livros():
     try:
         conexao = sqlite3.connect("biblioteca.db")
@@ -118,16 +121,18 @@ def remover_livro():
     try:
         conexao = sqlite3.connect("biblioteca.db")
         cursor = conexao.cursor()
-
-        id_livro = int(input("Digite o ID do livro que deseja deletar: "))
-
-        cursor.execute("DELETE FROM livros WHERE id=?", (id_livro,))
-        conexao.commit()
-        #Verificar se o item foi deletado
-        if cursor.rowcount > 0:
-            print("Aluno removido com sucesso")
-        else:
-            print("Nenhum aluno cadastrado com o ID fornecido")
+        
+        id_livro = int(st.text_input("Digite o ID do livro que deseja deletar: "))
+        
+        if st.button("Confirmar"):
+    
+            cursor.execute("DELETE FROM livros WHERE id=?", (id_livro,))
+            conexao.commit()
+            #Verificar se o item foi deletado
+            if cursor.rowcount > 0:
+                print("Aluno removido com sucesso")
+            else:
+                print("Nenhum aluno cadastrado com o ID fornecido")
     except Exception as erro:
         print(f"Errp ap tentar excluir o aluno. Erro = {erro}")
     finally:
