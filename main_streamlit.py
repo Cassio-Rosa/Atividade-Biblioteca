@@ -11,3 +11,5 @@ with aba2:
     fst.mostrar_livros()
 with aba3:
     fst.remover_livro()
+with aba4:
+    fst.atualizar_livro()

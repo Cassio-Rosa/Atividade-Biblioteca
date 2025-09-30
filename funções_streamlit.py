@@ -90,33 +90,36 @@ def mostrar_livros():
 
 def atualizar_livro():
     try:
+        ids = adiconar_lista()
         conexao = sqlite3.connect("biblioteca.db")
         cursor = conexao.cursor()
-        id_mudar = int(input("Digite o id do livro que você quer alterar a disponibilidade: "))
-        cursor.execute("""
-SELECT disponivel FROM livros WHERE id = ?
+        id_mudar = st.selectbox("Digite o id do livro que você quer alterar a disponibilidade: ", ids)
+       
+        if id_mudar:
+            retorno = cursor.fetchone()
+            cursor.execute("""
+                SELECT disponivel FROM livros WHERE id = ?
 
-""", (id_mudar,))
-        retorno = cursor.fetchone()
-        if retorno[0] is None:
-            print("ID não encontrado")
-            return
-        if retorno[0] == "SIM":
-            cursor.execute("""
-        UPDATE livros
-        SET disponivel = ?
-        WHERE id = ?
-        """, ("NÃO",id_mudar))
-        conexao.commit()
-        if retorno[0] == "NÃO":
-            cursor.execute("""
-        UPDATE livros
-        SET disponivel = ?
-        WHERE id = ?    
-        """, ("SIM",id_mudar))
-        conexao.commit()
+                """, (id_mudar,))
+            
+            if retorno[0] is None:
+                    print("ID não encontrado")
+                    return
+            elif retorno[0] == "SIM":
+                    cursor.execute("""
+                UPDATE livros
+                SET disponivel = ?
+                WHERE id = ?
+                """, ("NÃO",id_mudar))
+                    conexao.commit()
+            elif retorno[0] == "NÃO":
+                    cursor.execute("""
+                UPDATE livros
+                SET disponivel = ?
+                WHERE id = ?    
+                """, ("SIM",id_mudar))
+            conexao.commit()
         
-
     except Exception as erro:
         print(f"Se ferrou ai pai. Erro = {erro}")
     finally:
