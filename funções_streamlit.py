@@ -125,24 +125,22 @@ SELECT disponivel FROM livros WHERE id = ?
             conexao.close()
 
 def remover_livro():
-    
+    ids = adiconar_lista()
+
     try:
         conexao = sqlite3.connect("biblioteca.db")
         cursor = conexao.cursor()
         
-        id_livro = int(st.text_input("Digite o ID do livro que deseja deletar: "))
+        id_livro = st.selectbox("Digite o ID do livro que deseja deletar: ", ids)
         
         if st.button("Confirmar"):
     
             cursor.execute("DELETE FROM livros WHERE id=?", (id_livro,))
             conexao.commit()
-            #Verificar se o item foi deletado
-            if cursor.rowcount > 0:
-                print("Aluno removido com sucesso")
-            else:
-                print("Nenhum aluno cadastrado com o ID fornecido")
+            st.success("Livro Removido")
+     
     except Exception as erro:
-        print(f"Errp ap tentar excluir o aluno. Erro = {erro}")
+        st.error(f"Errp ap tentar excluir o aluno. Erro = {erro}")
     finally:
         #Sempre fecha a conexão, com sucesso ou erro
         if conexao:
